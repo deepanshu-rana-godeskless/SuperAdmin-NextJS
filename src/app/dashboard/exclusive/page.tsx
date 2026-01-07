@@ -8,68 +8,47 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card';
-import { useOrganization, Protect } from '@clerk/nextjs';
 import { BadgeCheck, Lock } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export default function ExclusivePage() {
-  const { organization, isLoaded } = useOrganization();
-
   return (
-    <PageContainer isloading={!isLoaded}>
-      <Protect
-        plan='pro'
-        fallback={
-          <div className='flex h-full items-center justify-center'>
-            <Alert>
-              <Lock className='h-5 w-5 text-yellow-600' />
-              <AlertDescription>
-                <div className='mb-1 text-lg font-semibold'>
-                  Pro Plan Required
-                </div>
-                <div className='text-muted-foreground'>
-                  This page is only available to organizations on the{' '}
-                  <span className='font-semibold'>Pro</span> plan.
-                  <br />
-                  Upgrade your subscription in&nbsp;
-                  <a className='underline' href='/dashboard/billing'>
-                    Billing &amp; Plans
-                  </a>
-                  .
-                </div>
-              </AlertDescription>
-            </Alert>
-          </div>
-        }
-      >
-        <div className='space-y-6'>
-          <div>
-            <h1 className='flex items-center gap-2 text-3xl font-bold tracking-tight'>
-              <BadgeCheck className='h-7 w-7 text-green-600' />
-              Exclusive Area
-            </h1>
+    <PageContainer>
+      <div className='space-y-6'>
+        {/* Info Alert */}
+        <Alert>
+          <Lock className='h-4 w-4' />
+          <AlertDescription>
+            Plan-based protection features have been removed along with Clerk
+            authentication. This page would typically require a Pro plan to
+            access.
+          </AlertDescription>
+        </Alert>
+
+        {/* Placeholder Content */}
+        <Card>
+          <CardHeader>
+            <CardTitle className='flex items-center gap-2'>
+              <BadgeCheck className='h-5 w-5' />
+              Exclusive Features
+            </CardTitle>
+            <CardDescription>
+              This feature was previously protected by Clerk billing plans
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
             <p className='text-muted-foreground'>
-              Welcome,{' '}
-              <span className='font-semibold'>{organization?.name}</span>! This
-              page contains exclusive features for Pro plan organizations.
+              Implement your own plan-based access control here, such as:
             </p>
-          </div>
-          <Card>
-            <CardHeader>
-              <CardTitle>
-                Thank You for Checking Out the Exclusive Page
-              </CardTitle>
-              <CardDescription>
-                This means you belong to an organization subscribed to the Pro
-                plan.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className='text-lg'>Have a wonderful day!</div>
-            </CardContent>
-          </Card>
-        </div>
-      </Protect>
+            <ul className='text-muted-foreground mt-4 list-inside list-disc space-y-2'>
+              <li>Custom subscription checks</li>
+              <li>Feature flag management</li>
+              <li>Premium content protection</li>
+              <li>Usage limits enforcement</li>
+            </ul>
+          </CardContent>
+        </Card>
+      </div>
     </PageContainer>
   );
 }

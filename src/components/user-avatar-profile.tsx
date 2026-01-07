@@ -4,9 +4,11 @@ interface UserAvatarProfileProps {
   className?: string;
   showInfo?: boolean;
   user: {
-    imageUrl?: string;
+    imageUrl?: string | null;
     fullName?: string | null;
-    emailAddresses: Array<{ emailAddress: string }>;
+    emailAddress?: string;
+    firstName?: string | null;
+    lastName?: string | null;
   } | null;
 }
 
@@ -27,9 +29,7 @@ export function UserAvatarProfile({
       {showInfo && (
         <div className='grid flex-1 text-left text-sm leading-tight'>
           <span className='truncate font-semibold'>{user?.fullName || ''}</span>
-          <span className='truncate text-xs'>
-            {user?.emailAddresses[0].emailAddress || ''}
-          </span>
+          <span className='truncate text-xs'>{user?.emailAddress || ''}</span>
         </div>
       )}
     </div>
