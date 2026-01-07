@@ -4,7 +4,10 @@ import {
   Instrument_Sans,
   Inter,
   Mulish,
-  Noto_Sans_Mono
+  Noto_Sans_Mono,
+  Roboto_Serif,
+  Quicksand,
+  Oswald
 } from 'next/font/google';
 
 import { cn } from '@/lib/utils';
@@ -39,11 +42,29 @@ const fontInter = Inter({
   variable: '--font-inter'
 });
 
+const fontSerif = Roboto_Serif({
+  subsets: ['latin'],
+  variable: '--font-serif'
+});
+
+const fontRounded = Quicksand({
+  subsets: ['latin'],
+  variable: '--font-rounded'
+});
+
+const fontDisplay = Oswald({
+  subsets: ['latin'],
+  variable: '--font-display'
+});
+
 export const fontVariables = cn(
   fontSans.variable,
   fontMono.variable,
   fontInstrument.variable,
   fontNotoMono.variable,
   fontMullish.variable,
-  fontInter.variable
+  fontInter.variable,
+  fontSerif.variable,
+  fontRounded.variable,
+  fontDisplay.variable
 );

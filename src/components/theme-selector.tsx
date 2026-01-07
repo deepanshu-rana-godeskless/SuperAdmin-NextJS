@@ -50,6 +50,27 @@ const MONO_THEMES = [
   }
 ];
 
+const SERIF_THEMES = [
+  {
+    name: 'Serif',
+    value: 'serif'
+  }
+];
+
+const ROUNDED_THEMES = [
+  {
+    name: 'Rounded',
+    value: 'rounded'
+  }
+];
+
+const DISPLAY_THEMES = [
+  {
+    name: 'Display',
+    value: 'display'
+  }
+];
+
 export function ThemeSelector() {
   const { activeTheme, setActiveTheme } = useThemeConfig();
 
@@ -90,6 +111,30 @@ export function ThemeSelector() {
           <SelectGroup>
             <SelectLabel>Monospaced</SelectLabel>
             {MONO_THEMES.map((theme) => (
+              <SelectItem key={theme.name} value={theme.value}>
+                {theme.name}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+          <SelectGroup>
+            <SelectLabel>Serif</SelectLabel>
+            {SERIF_THEMES.map((theme) => (
+              <SelectItem key={theme.name} value={theme.value}>
+                {theme.name}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+          <SelectGroup>
+            <SelectLabel>Rounded</SelectLabel>
+            {ROUNDED_THEMES.map((theme) => (
+              <SelectItem key={theme.name} value={theme.value}>
+                {theme.name}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+          <SelectGroup>
+            <SelectLabel>Display</SelectLabel>
+            {DISPLAY_THEMES.map((theme) => (
               <SelectItem key={theme.name} value={theme.value}>
                 {theme.name}
               </SelectItem>

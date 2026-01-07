@@ -43,9 +43,16 @@ export function ActiveThemeProvider({
       .forEach((className) => {
         document.body.classList.remove(className);
       });
-    document.body.classList.add(`theme-${activeTheme}`);
-    if (activeTheme.endsWith('-scaled')) {
-      document.body.classList.add('theme-scaled');
+
+    // Support new font themes
+    const fontThemes = ['mono-scaled', 'serif', 'rounded', 'display'];
+    if (fontThemes.includes(activeTheme)) {
+      document.body.classList.add(`theme-${activeTheme}`);
+    } else {
+      document.body.classList.add(`theme-${activeTheme}`);
+      if (activeTheme.endsWith('-scaled')) {
+        document.body.classList.add('theme-scaled');
+      }
     }
   }, [activeTheme]);
 
