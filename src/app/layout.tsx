@@ -17,7 +17,7 @@ const META_THEME_COLORS = {
 
 export const metadata: Metadata = {
   title: 'Next Shadcn',
-  description: 'Basic dashboard with Next.js and Shadcn'
+  description: 'Basic core admin with Next.js and Shadcn'
 };
 
 export const viewport: Viewport = {

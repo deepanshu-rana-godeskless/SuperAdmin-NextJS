@@ -174,14 +174,14 @@ export default function AppSidebar() {
 
                 <DropdownMenuGroup>
                   <DropdownMenuItem
-                    onClick={() => router.push('/dashboard/profile')}
+                    onClick={() => router.push('/core/profile')}
                   >
                     <IconUserCircle className='mr-2 h-4 w-4' />
                     Profile
                   </DropdownMenuItem>
                   {organization && (
                     <DropdownMenuItem
-                      onClick={() => router.push('/dashboard/billing')}
+                      onClick={() => router.push('/core/billing')}
                     >
                       <IconCreditCard className='mr-2 h-4 w-4' />
                       Billing
