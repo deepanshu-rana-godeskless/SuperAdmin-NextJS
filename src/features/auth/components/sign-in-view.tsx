@@ -73,10 +73,10 @@ export default function SignInViewPage({ stars }: { stars: number }) {
               completely removed.
             </p>
             <Link
-              href='/dashboard'
+              href='/core'
               className={cn(buttonVariants({ variant: 'default' }), 'w-full')}
             >
-              Go to Dashboard
+              Go to Core
             </Link>
           </div>
 

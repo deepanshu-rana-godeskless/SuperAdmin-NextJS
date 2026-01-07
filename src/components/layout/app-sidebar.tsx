@@ -44,7 +44,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import * as React from 'react';
 import { Icons } from '../icons';
-import { OrgSwitcher } from '../org-switcher';
+import { OrgSidebarHeader } from '../org-sidebar-header';
 
 export default function AppSidebar() {
   const pathname = usePathname();
@@ -72,7 +72,7 @@ export default function AppSidebar() {
   return (
     <Sidebar collapsible='icon'>
       <SidebarHeader>
-        <OrgSwitcher />
+        <OrgSidebarHeader />
       </SidebarHeader>
       <SidebarContent className='overflow-x-hidden'>
         <SidebarGroup>
@@ -174,14 +174,14 @@ export default function AppSidebar() {
 
                 <DropdownMenuGroup>
                   <DropdownMenuItem
-                    onClick={() => router.push('/dashboard/profile')}
+                    onClick={() => router.push('/core/profile')}
                   >
                     <IconUserCircle className='mr-2 h-4 w-4' />
                     Profile
                   </DropdownMenuItem>
                   {organization && (
                     <DropdownMenuItem
-                      onClick={() => router.push('/dashboard/billing')}
+                      onClick={() => router.push('/core/billing')}
                     >
                       <IconCreditCard className='mr-2 h-4 w-4' />
                       Billing

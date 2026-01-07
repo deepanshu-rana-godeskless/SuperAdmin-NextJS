@@ -35,22 +35,22 @@ import { NavItem } from '@/types';
 export const navItems: NavItem[] = [
   {
     title: 'Dashboard',
-    url: '/dashboard/overview',
+    url: '/core/overview',
     icon: 'dashboard',
     isActive: false,
-    shortcut: ['d', 'd'],
+    shortcut: ['c', 'c'],
     items: []
   },
   {
     title: 'Workspaces',
-    url: '/dashboard/workspaces',
+    url: '/core/workspaces',
     icon: 'workspace',
     isActive: false,
     items: []
   },
   {
     title: 'Teams',
-    url: '/dashboard/workspaces/team',
+    url: '/core/workspaces/team',
     icon: 'teams',
     isActive: false,
     items: [],
@@ -61,7 +61,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Product',
-    url: '/dashboard/product',
+    url: '/core/product',
     icon: 'product',
     shortcut: ['p', 'p'],
     isActive: false,
@@ -69,7 +69,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Kanban',
-    url: '/dashboard/kanban',
+    url: '/core/kanban',
     icon: 'kanban',
     shortcut: ['k', 'k'],
     isActive: false,
@@ -83,7 +83,7 @@ export const navItems: NavItem[] = [
     items: [
       {
         title: 'Exclusive',
-        url: '/dashboard/exclusive',
+        url: '/core/exclusive',
         icon: 'exclusive',
         shortcut: ['m', 'm']
       }
@@ -97,25 +97,19 @@ export const navItems: NavItem[] = [
     items: [
       {
         title: 'Profile',
-        url: '/dashboard/profile',
+        url: '/core/profile',
         icon: 'profile',
         shortcut: ['m', 'm']
       },
       {
         title: 'Billing',
-        url: '/dashboard/billing',
+        url: '/core/billing',
         icon: 'billing',
         shortcut: ['b', 'b'],
         // Only show billing if in organization context
         access: { requireOrg: true }
         // Alternative: require billing management permission
         // access: { requireOrg: true, permission: 'org:manage:billing' }
-      },
-      {
-        title: 'Login',
-        shortcut: ['l', 'l'],
-        url: '/',
-        icon: 'login'
       }
     ]
   }
