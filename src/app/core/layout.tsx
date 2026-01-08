@@ -8,7 +8,7 @@ import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 
 export const metadata: Metadata = {
-  title: 'Next Shadcn Core Starter',
+  title: 'SuperAdmin Portal - GoDeskless',
   description: 'Basic core admin with Next.js and Shadcn'
 };
 

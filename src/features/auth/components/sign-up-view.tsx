@@ -4,7 +4,7 @@ import { GitHubLogoIcon } from '@radix-ui/react-icons';
 import { IconStar } from '@tabler/icons-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { InteractiveGridPattern } from './interactive-grid';
+import { InteractiveGridPattern } from '../../../app/auth/sign-in/components/interactive-grid';
 
 export const metadata: Metadata = {
   title: 'Authentication',

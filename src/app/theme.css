@@ -103,3 +103,15 @@ body {
     @apply !rounded-none !shadow-none;
   }
 }
+
+.theme-serif {
+  --font-sans: var(--font-serif);
+}
+
+.theme-rounded {
+  --font-sans: var(--font-rounded);
+}
+
+.theme-display {
+  --font-sans: var(--font-display);
+}
