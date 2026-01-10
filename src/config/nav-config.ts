@@ -35,6 +35,12 @@ import { NavItem } from '@/types';
 export const navItems: NavItem[] = [
   {
     title: 'Dashboard',
+    url: '/core/dashboard',
+    icon: 'dashboard',
+    isActive: false
+  },
+  {
+    title: 'Overview',
     url: '/core/overview',
     icon: 'dashboard',
     isActive: false,
