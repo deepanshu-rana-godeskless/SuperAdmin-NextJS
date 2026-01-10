@@ -5,6 +5,7 @@ import { IconStar } from '@tabler/icons-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { InteractiveGridPattern } from './interactive-grid';
+import SignInForm from './SignInForm';
 
 export const metadata: Metadata = {
   title: 'Authentication',
@@ -63,21 +64,13 @@ export default function SignInViewPage({ stars }: { stars: number }) {
               Sign In to Your Account
             </h1>
             <p className='text-muted-foreground text-sm'>
-              Authentication has been removed from this project
+              Enter your credentials to access the management dashboard.
             </p>
           </div>
 
-          <div className='space-y-4 text-center'>
-            <p className='text-muted-foreground'>
-              This page previously used Clerk authentication which has been
-              completely removed.
-            </p>
-            <Link
-              href='/core'
-              className={cn(buttonVariants({ variant: 'default' }), 'w-full')}
-            >
-              Go to Core
-            </Link>
+          <div className='space-y-4'>
+            {/* SignInForm integration */}
+            <SignInForm />
           </div>
 
           <div className='flex items-center justify-center'>
