@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import axios from 'axios';
 import { environment } from '../environment';
 
@@ -23,5 +24,11 @@ api.interceptors.request.use((config) => {
   // If you ever need to attach a token, you can do it here
   return config;
 });
+
+// Returns Authorization header with Bearer token if access_token exists
+export function getAuthHeaders(): { Authorization?: string } {
+  const accessToken = Cookies.get('access_token');
+  return accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
+}
 
 export default api;

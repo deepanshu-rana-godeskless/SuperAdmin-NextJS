@@ -11,6 +11,9 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { UserAvatarProfile } from '@/components/user-avatar-profile';
 import { useRouter } from 'next/navigation';
+import { logout } from '@/app/auth/sign-in/services';
+import { clearAuthCookies } from '@/app/auth/sign-in/lib/login-utils';
+import { toast } from 'sonner';
 
 export function UserNav() {
   const router = useRouter();
@@ -22,6 +25,13 @@ export function UserNav() {
     imageUrl: null,
     firstName: 'Demo',
     lastName: 'User'
+  };
+
+  const handleSignOut = async () => {
+    await logout();
+    clearAuthCookies();
+    toast.success('Logged out successfully');
+    router.push('/auth/sign-in');
   };
 
   return (
@@ -55,9 +65,7 @@ export function UserNav() {
           <DropdownMenuItem>New Team</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => router.push('/auth/sign-in')}>
-          Sign Out
-        </DropdownMenuItem>
+        <DropdownMenuItem onClick={handleSignOut}>Sign Out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
