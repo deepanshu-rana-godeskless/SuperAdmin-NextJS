@@ -9,12 +9,20 @@ import {
   CardAction,
   CardFooter
 } from '@/components/ui/card';
+import { DatePickerWithRange } from '@/components/ui/date-range-picker';
 import { IconTrendingDown, IconTrendingUp } from '@tabler/icons-react';
 import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
+import { DateRange } from 'react-day-picker';
+import { formatDateForApi } from '../lib/dashboard-utils';
 
-export default function HeaderCards() {
+interface HeaderCardsProps {
+  onDateRangeChange?: (startDate: string, endDate: string) => void;
+}
+
+export default function HeaderCards({ onDateRangeChange }: HeaderCardsProps) {
   const [firstName, setFirstName] = useState('');
+  const [dateRange, setDateRange] = useState<DateRange | undefined>();
 
   useEffect(() => {
     const userDataStr = Cookies.get('user_data');
@@ -32,6 +40,16 @@ export default function HeaderCards() {
     }
   }, []);
 
+  const handleDateRangeChange = (range: DateRange | undefined) => {
+    setDateRange(range);
+
+    if (range?.from && range?.to && onDateRangeChange) {
+      const startDate = formatDateForApi(range.from);
+      const endDate = formatDateForApi(range.to);
+      onDateRangeChange(startDate, endDate);
+    }
+  };
+
   return (
     <PageContainer>
       <div className='flex flex-1 flex-col space-y-2'>
@@ -39,6 +57,12 @@ export default function HeaderCards() {
           <h2 className='text-2xl font-bold tracking-tight'>
             {`Hi${firstName ? ' ' + firstName : ''}, Welcome back 👋`}
           </h2>
+          <DatePickerWithRange
+            date={dateRange}
+            setDate={handleDateRangeChange}
+            className='ml-auto'
+            defaultToToday={true}
+          />
         </div>
 
         <div className='*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs md:grid-cols-2 lg:grid-cols-4'>

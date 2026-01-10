@@ -48,7 +48,7 @@ import { OrgSidebarHeader } from '../org-sidebar-header';
 
 export default function AppSidebar() {
   const pathname = usePathname();
-  const { isOpen } = useMediaQuery();
+  const isOpen = useMediaQuery('(max-width: 768px)');
   // Mock user data since Clerk is removed
   const user = {
     fullName: 'Demo User',

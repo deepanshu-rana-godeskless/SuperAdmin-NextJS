@@ -1,6 +1,7 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { toast } from 'sonner';
+import NProgress from 'nprogress';
 import HeaderCards from './components/HeaderCards';
 import {
   fetchTraffic,
@@ -22,8 +23,14 @@ import type {
   TenantTopUsageResponse,
   LeastRecentUserTenantDataResponse
 } from './types/api-types';
+import { formatDateForApi } from './lib/dashboard-utils';
 
 export default function DashboardPage() {
+  // Date range state - default to today
+  const today = formatDateForApi(new Date());
+  const [startDate, setStartDate] = useState<string>(today);
+  const [endDate, setEndDate] = useState<string>(today);
+
   // States for each API
   const [traffic, setTraffic] = useState<TrafficResponse | null>(null);
   const [utilizationWhatsapp, setUtilizationWhatsapp] =
@@ -49,15 +56,14 @@ export default function DashboardPage() {
     useState<LeastRecentUserTenantDataResponse | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchAll() {
+  // Fetch all dashboard data with given date range
+  const fetchAllData = useCallback(
+    async (start_date: string, end_date: string) => {
       setLoading(true);
+      NProgress.start();
       try {
         const token = undefined;
-        const today = new Date().toISOString().slice(0, 10);
         const defaultParams = {
-          start_date: today,
-          end_date: today,
           count: 5,
           tenant_type: 'paid',
           page: 1,
@@ -81,28 +87,28 @@ export default function DashboardPage() {
             return null;
           }),
           fetchDailyUtilization(
-            { category: 'whatsapp', start_date: today, end_date: today },
+            { category: 'whatsapp', start_date, end_date },
             token
           ).catch((e) => {
             toast.error('Failed to fetch WhatsApp utilization');
             return null;
           }),
           fetchDailyUtilization(
-            { category: 'sms', start_date: today, end_date: today },
+            { category: 'sms', start_date, end_date },
             token
           ).catch((e) => {
             toast.error('Failed to fetch SMS utilization');
             return null;
           }),
           fetchDailyUtilization(
-            { category: 'video', start_date: today, end_date: today },
+            { category: 'video', start_date, end_date },
             token
           ).catch((e) => {
             toast.error('Failed to fetch video utilization');
             return null;
           }),
           fetchDailyUtilization(
-            { category: 'disk_space', start_date: today, end_date: today },
+            { category: 'disk_space', start_date, end_date },
             token
           ).catch((e) => {
             toast.error('Failed to fetch disk space utilization');
@@ -115,8 +121,8 @@ export default function DashboardPage() {
           fetchTenantsList(
             {
               page: 1,
-              from_date: today,
-              to_date: today,
+              from_date: start_date,
+              to_date: end_date,
               tenant_type: '',
               timezone: defaultParams.timezone
             },
@@ -126,14 +132,24 @@ export default function DashboardPage() {
             return null;
           }),
           fetchRecentUserTenantData(
-            { count: 5, fromDate: today, toDate: today, tenant_type: 'paid' },
+            {
+              count: 5,
+              fromDate: start_date,
+              toDate: end_date,
+              tenant_type: 'paid'
+            },
             token
           ).catch((e) => {
             toast.error('Failed to fetch recent user tenant data');
             return null;
           }),
           fetchRecentTicketVisitTenantData(
-            { count: 5, fromDate: today, toDate: today, tenant_type: 'paid' },
+            {
+              count: 5,
+              fromDate: start_date,
+              toDate: end_date,
+              tenant_type: 'paid'
+            },
             token
           ).catch((e) => {
             toast.error('Failed to fetch recent ticket/visit tenant data');
@@ -142,8 +158,8 @@ export default function DashboardPage() {
           fetchTenantTopUsage(
             {
               count: 5,
-              start_date: today,
-              end_date: today,
+              start_date,
+              end_date,
               tenant_type: 'paid'
             },
             token
@@ -152,7 +168,12 @@ export default function DashboardPage() {
             return null;
           }),
           fetchLeastRecentUserTenantData(
-            { count: 5, fromDate: today, toDate: today, tenant_type: 'paid' },
+            {
+              count: 5,
+              fromDate: start_date,
+              toDate: end_date,
+              tenant_type: 'paid'
+            },
             token
           ).catch((e) => {
             toast.error('Failed to fetch least recent user tenant data');
@@ -170,36 +191,36 @@ export default function DashboardPage() {
         setRecentTicketVisitTenantData(recentTicketVisitTenantDataRes);
         setTenantTopUsage(tenantTopUsageRes);
         setLeastRecentUserTenantData(leastRecentUserTenantDataRes);
-        // Show success toast if all loaded (at least one is not null)
-        if (
-          trafficRes &&
-          utilWhatsapp &&
-          utilSms &&
-          utilVideo &&
-          utilDisk &&
-          tenantsAnalyticsRes &&
-          tenantsListRes &&
-          recentUserTenantDataRes &&
-          recentTicketVisitTenantDataRes &&
-          tenantTopUsageRes &&
-          leastRecentUserTenantDataRes
-        ) {
-          toast.success('Dashboard data loaded successfully!');
-        }
       } catch (e) {
         toast.error('Dashboard data failed to load.');
       } finally {
         setLoading(false);
+        NProgress.done();
       }
-    }
-    fetchAll();
+    },
+    []
+  );
+
+  // Handle date range change from the DatePicker
+  const handleDateRangeChange = useCallback(
+    (newStartDate: string, newEndDate: string) => {
+      setStartDate(newStartDate);
+      setEndDate(newEndDate);
+      // Refetch all data with new date range
+      fetchAllData(newStartDate, newEndDate);
+    },
+    [fetchAllData]
+  );
+
+  // Initial data fetch on mount
+  useEffect(() => {
+    fetchAllData(startDate, endDate);
   }, []);
 
   // You can pass these states to child components as needed
   return (
     <div>
-      {loading && <div>Loading dashboard data...</div>}
-      <HeaderCards />
+      <HeaderCards onDateRangeChange={handleDateRangeChange} />
       {/* Example: <DashboardStats traffic={traffic} utilization={utilizationWhatsapp} ... /> */}
     </div>
   );
