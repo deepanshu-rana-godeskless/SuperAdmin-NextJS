@@ -13,3 +13,10 @@ export function setLoginCookies(response: LoginResponse) {
     expires: response.expires_in / 3600
   });
 }
+
+export function clearAuthCookies() {
+  Cookies.remove('access_token');
+  Cookies.remove('user_data');
+  Cookies.remove('login_time');
+  Cookies.remove('expires_in');
+}

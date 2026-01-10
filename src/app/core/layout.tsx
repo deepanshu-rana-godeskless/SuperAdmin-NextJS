@@ -6,6 +6,7 @@ import { InfobarProvider } from '@/components/ui/infobar';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
+import ProtectedRoute from './ProtectedRoute';
 
 export const metadata: Metadata = {
   title: 'SuperAdmin Portal - GoDeskless',
@@ -28,7 +29,7 @@ export default async function CoreLayout({
           <SidebarInset>
             <Header />
             {/* page main content */}
-            {children}
+            <ProtectedRoute>{children}</ProtectedRoute>
             {/* page main content ends */}
           </SidebarInset>
           <InfoSidebar side='right' />

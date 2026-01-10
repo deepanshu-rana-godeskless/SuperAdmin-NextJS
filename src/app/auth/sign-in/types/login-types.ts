@@ -34,3 +34,8 @@ export type LoginErrorResponse = {
   msg: string;
   error_code: number;
 };
+
+export type LogoutResponse = {
+  msg: string;
+  success_code: number;
+};
