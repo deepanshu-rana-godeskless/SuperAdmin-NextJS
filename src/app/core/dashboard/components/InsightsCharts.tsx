@@ -39,10 +39,10 @@ function InsightsCharts({
   return (
     <>
       <div className='mt-6 mb-4'>
-        <h2 className='mb-1 text-xl font-semibold text-gray-900'>
+        <h2 className='text-foreground mb-1 text-xl font-semibold'>
           Analytics Overview
         </h2>
-        <p className='text-sm text-gray-600'>
+        <p className='text-foreground/70 text-sm'>
           Key insights and performance metrics
         </p>
       </div>
