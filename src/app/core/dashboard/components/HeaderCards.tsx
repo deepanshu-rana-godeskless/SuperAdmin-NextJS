@@ -32,6 +32,7 @@ interface HeaderCardsProps {
   tenantTopUsage?: any;
   leastRecentUserTenantData?: any;
   loading?: boolean;
+  avgTicketVisitUser?: any;
 }
 
 export default function HeaderCards({
