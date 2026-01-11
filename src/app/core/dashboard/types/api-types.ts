@@ -305,6 +305,27 @@ export interface LeastRecentUserTenantDataResponse {
   results: LeastRecentUserTenantDataItem[];
 }
 
+// 9. Avg Ticket Visit User Data
+export interface AvgTicketVisitUserRequest {
+  count: number;
+  start_date: string;
+  end_date: string;
+  tenant_type: string;
+}
+
+export interface AvgTicketVisitUserResult {
+  tenant_name: string;
+  users_count: number;
+  total_tickets: number;
+  total_visits: number;
+  total_tickets_visits: number;
+  avg_ticket_visits_user: number;
+}
+
+export interface AvgTicketVisitUserResponse {
+  results: AvgTicketVisitUserResult[];
+}
+
 // Generic API error
 export interface ApiError {
   message: string;

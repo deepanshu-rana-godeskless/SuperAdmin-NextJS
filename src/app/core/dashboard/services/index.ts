@@ -23,6 +23,8 @@ import type {
   TenantTopUsageResponse,
   LeastRecentUserTenantDataRequest,
   LeastRecentUserTenantDataResponse,
+  AvgTicketVisitUserRequest,
+  AvgTicketVisitUserResponse,
   ApiError
 } from '../types/api-types';
 
@@ -40,30 +42,12 @@ function toQuery(params: Record<string, any>): string {
   );
 }
 
-// User Analytics
-export async function fetchUserAnalytics(
-  params: UserAnalyticsRequest
-): Promise<UserAnalyticsResponse> {
-  const url = `${API_BASE}/analytics/users${toQuery(params)}`;
-  const { data } = await axios.get<UserAnalyticsResponse>(url);
-  return data;
-}
-
 // Workspace Utilization
 export async function fetchWorkspaceUtilization(
   params: WorkspaceUtilizationRequest
 ): Promise<WorkspaceUtilizationResponse> {
   const url = `${API_BASE}/analytics/workspaces${toQuery(params)}`;
   const { data } = await axios.get<WorkspaceUtilizationResponse>(url);
-  return data;
-}
-
-// Product Analytics
-export async function fetchProductAnalytics(
-  params: ProductAnalyticsRequest
-): Promise<ProductAnalyticsResponse> {
-  const url = `${API_BASE}/analytics/products${toQuery(params)}`;
-  const { data } = await axios.get<ProductAnalyticsResponse>(url);
   return data;
 }
 
@@ -182,4 +166,19 @@ export async function fetchLeastRecentUserTenantData(
     }
   );
   return data;
+}
+
+// Avg Ticket Visit User
+export async function fetchAvgTicketVisitUser(
+  params: AvgTicketVisitUserRequest,
+  token?: string
+): Promise<AvgTicketVisitUserResponse> {
+  const url = `${API_BASE}/api/get/avg-ticket-visit-user/`;
+
+  const response = await axios.post<AvgTicketVisitUserResponse>(url, params, {
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined
+  });
+  // eslint-disable-next-line no-console
+  console.log('fetchAvgTicketVisitUser raw response:', response);
+  return response.data;
 }

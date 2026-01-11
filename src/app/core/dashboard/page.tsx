@@ -2,7 +2,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { toast } from 'sonner';
 import NProgress from 'nprogress';
+import PageContainer from '@/components/layout/page-container';
 import HeaderCards from './components/HeaderCards';
+import InsightsCharts from './components/InsightsCharts';
 import {
   fetchTraffic,
   fetchDailyUtilization,
@@ -11,7 +13,8 @@ import {
   fetchRecentUserTenantData,
   fetchRecentTicketVisitTenantData,
   fetchTenantTopUsage,
-  fetchLeastRecentUserTenantData
+  fetchLeastRecentUserTenantData,
+  fetchAvgTicketVisitUser
 } from './services';
 import type {
   TrafficResponse,
@@ -21,7 +24,8 @@ import type {
   RecentUserTenantDataResponse,
   RecentTicketVisitTenantDataResponse,
   TenantTopUsageResponse,
-  LeastRecentUserTenantDataResponse
+  LeastRecentUserTenantDataResponse,
+  AvgTicketVisitUserResponse
 } from './types/api-types';
 import { formatDateForApi } from './lib/dashboard-utils';
 
@@ -54,6 +58,8 @@ export default function DashboardPage() {
     useState<TenantTopUsageResponse | null>(null);
   const [leastRecentUserTenantData, setLeastRecentUserTenantData] =
     useState<LeastRecentUserTenantDataResponse | null>(null);
+  const [avgTicketVisitUser, setAvgTicketVisitUser] =
+    useState<AvgTicketVisitUserResponse | null>(null);
   const [loading, setLoading] = useState(true);
 
   // Fetch all dashboard data with given date range
@@ -80,7 +86,8 @@ export default function DashboardPage() {
           recentUserTenantDataRes,
           recentTicketVisitTenantDataRes,
           tenantTopUsageRes,
-          leastRecentUserTenantDataRes
+          leastRecentUserTenantDataRes,
+          avgTicketVisitUserRes
         ] = await Promise.all([
           fetchTraffic(token).catch((e) => {
             toast.error('Failed to fetch traffic data');
@@ -178,6 +185,18 @@ export default function DashboardPage() {
           ).catch((e) => {
             toast.error('Failed to fetch least recent user tenant data');
             return null;
+          }),
+          fetchAvgTicketVisitUser(
+            {
+              count: 5,
+              start_date,
+              end_date,
+              tenant_type: 'paid'
+            },
+            token
+          ).catch((e) => {
+            toast.error('Failed to fetch avg ticket/visit user data');
+            return null;
           })
         ]);
         setTraffic(trafficRes);
@@ -191,6 +210,7 @@ export default function DashboardPage() {
         setRecentTicketVisitTenantData(recentTicketVisitTenantDataRes);
         setTenantTopUsage(tenantTopUsageRes);
         setLeastRecentUserTenantData(leastRecentUserTenantDataRes);
+        setAvgTicketVisitUser(avgTicketVisitUserRes);
       } catch (e) {
         toast.error('Dashboard data failed to load.');
       } finally {
@@ -219,9 +239,40 @@ export default function DashboardPage() {
 
   // You can pass these states to child components as needed
   return (
-    <div>
-      <HeaderCards onDateRangeChange={handleDateRangeChange} />
-      {/* Example: <DashboardStats traffic={traffic} utilization={utilizationWhatsapp} ... /> */}
-    </div>
+    <PageContainer>
+      <HeaderCards
+        onDateRangeChange={handleDateRangeChange}
+        traffic={traffic}
+        utilizationWhatsapp={utilizationWhatsapp}
+        utilizationSms={utilizationSms}
+        utilizationVideo={utilizationVideo}
+        utilizationDisk={utilizationDisk}
+        tenantsAnalytics={tenantsAnalytics}
+        workspaceUtilization={null}
+        tenantsList={tenantsList}
+        recentUserTenantData={recentUserTenantData}
+        recentTicketVisitTenantData={recentTicketVisitTenantData}
+        tenantTopUsage={tenantTopUsage}
+        leastRecentUserTenantData={leastRecentUserTenantData}
+        avgTicketVisitUser={avgTicketVisitUser}
+        loading={loading}
+      />
+      <InsightsCharts
+        traffic={traffic}
+        utilizationWhatsapp={utilizationWhatsapp}
+        utilizationSms={utilizationSms}
+        utilizationVideo={utilizationVideo}
+        utilizationDisk={utilizationDisk}
+        tenantsAnalytics={tenantsAnalytics}
+        workspaceUtilization={null}
+        tenantsList={tenantsList}
+        recentUserTenantData={recentUserTenantData}
+        recentTicketVisitTenantData={recentTicketVisitTenantData}
+        tenantTopUsage={tenantTopUsage}
+        leastRecentUserTenantData={leastRecentUserTenantData}
+        avgTicketVisitUser={avgTicketVisitUser}
+        loading={loading}
+      />
+    </PageContainer>
   );
 }
