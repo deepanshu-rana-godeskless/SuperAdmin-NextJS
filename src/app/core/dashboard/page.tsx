@@ -14,7 +14,9 @@ import {
   fetchRecentTicketVisitTenantData,
   fetchTenantTopUsage,
   fetchLeastRecentUserTenantData,
-  fetchAvgTicketVisitUser
+  fetchAvgTicketVisitUser,
+  fetchTenantAverageUtilization,
+  fetchApiUtilizationMtd
 } from './services';
 import type {
   TrafficResponse,
@@ -25,7 +27,9 @@ import type {
   RecentTicketVisitTenantDataResponse,
   TenantTopUsageResponse,
   LeastRecentUserTenantDataResponse,
-  AvgTicketVisitUserResponse
+  AvgTicketVisitUserResponse,
+  TenantAverageUtilizationResponse,
+  ApiUtilizationMtdResponse
 } from './types/api-types';
 import { formatDateForApi } from './lib/dashboard-utils';
 
@@ -60,6 +64,10 @@ export default function DashboardPage() {
     useState<LeastRecentUserTenantDataResponse | null>(null);
   const [avgTicketVisitUser, setAvgTicketVisitUser] =
     useState<AvgTicketVisitUserResponse | null>(null);
+  const [tenantAverageUtilization, setTenantAverageUtilization] =
+    useState<TenantAverageUtilizationResponse | null>(null);
+  const [apiUtilizationMtd, setApiUtilizationMtd] =
+    useState<ApiUtilizationMtdResponse | null>(null);
   const [loading, setLoading] = useState(true);
 
   // Fetch all dashboard data with given date range
@@ -87,7 +95,9 @@ export default function DashboardPage() {
           recentTicketVisitTenantDataRes,
           tenantTopUsageRes,
           leastRecentUserTenantDataRes,
-          avgTicketVisitUserRes
+          avgTicketVisitUserRes,
+          tenantAverageUtilizationRes,
+          apiUtilizationMtdRes
         ] = await Promise.all([
           fetchTraffic(token).catch((e) => {
             toast.error('Failed to fetch traffic data');
@@ -197,6 +207,22 @@ export default function DashboardPage() {
           ).catch((e) => {
             toast.error('Failed to fetch avg ticket/visit user data');
             return null;
+          }),
+          fetchTenantAverageUtilization(
+            {
+              count: 5,
+              start_date,
+              end_date,
+              tenant_type: 'paid'
+            },
+            token
+          ).catch((e) => {
+            toast.error('Failed to fetch tenant average utilization data');
+            return null;
+          }),
+          fetchApiUtilizationMtd(token).catch((e) => {
+            toast.error('Failed to fetch API Utilization MTD data');
+            return null;
           })
         ]);
         setTraffic(trafficRes);
@@ -211,6 +237,8 @@ export default function DashboardPage() {
         setTenantTopUsage(tenantTopUsageRes);
         setLeastRecentUserTenantData(leastRecentUserTenantDataRes);
         setAvgTicketVisitUser(avgTicketVisitUserRes);
+        setTenantAverageUtilization(tenantAverageUtilizationRes);
+        setApiUtilizationMtd(apiUtilizationMtdRes);
       } catch (e) {
         toast.error('Dashboard data failed to load.');
       } finally {
@@ -271,6 +299,8 @@ export default function DashboardPage() {
         tenantTopUsage={tenantTopUsage}
         leastRecentUserTenantData={leastRecentUserTenantData}
         avgTicketVisitUser={avgTicketVisitUser}
+        tenantAverageUtilization={tenantAverageUtilization}
+        apiUtilizationMtd={apiUtilizationMtd}
         loading={loading}
       />
     </PageContainer>

@@ -119,7 +119,7 @@ export function CustomersPieChart({
 
   if (loading) {
     return (
-      <Card className='max-w-[325px] animate-pulse p-3'>
+      <Card className='max-w-[520px] animate-pulse p-3'>
         <div className='bg-muted mb-2 h-4 w-40 rounded' />
         <div className='bg-muted/70 mb-4 h-3 w-56 rounded' />
         <div className='bg-muted/60 mx-auto h-[240px] w-[240px] rounded-full' />
@@ -134,7 +134,7 @@ export function CustomersPieChart({
 
   if (!pieData.length) {
     return (
-      <Card className='p-4'>
+      <Card className='max-w-[520px] p-4'>
         <CardHeader className='px-0 pb-2'>
           <CardTitle className='text-sm font-semibold'>
             Customer Distribution
@@ -158,7 +158,7 @@ export function CustomersPieChart({
   /* ------------------------------------------------------------------------ */
 
   return (
-    <Card className='@container/card w-full max-w-[365px] gap-2 p-3'>
+    <Card className='@container/card w-full max-w-[520px] gap-2 p-3'>
       {/* Header */}
       <CardHeader className='space-y-0.5 px-0 pb-1'>
         <CardTitle className='text-sm font-semibold'>

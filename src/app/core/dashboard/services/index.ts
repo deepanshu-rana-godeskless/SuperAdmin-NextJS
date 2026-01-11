@@ -25,6 +25,9 @@ import type {
   LeastRecentUserTenantDataResponse,
   AvgTicketVisitUserRequest,
   AvgTicketVisitUserResponse,
+  TenantAverageUtilizationRequest,
+  TenantAverageUtilizationResponse,
+  ApiUtilizationMtdResponse,
   ApiError
 } from '../types/api-types';
 
@@ -178,7 +181,32 @@ export async function fetchAvgTicketVisitUser(
   const response = await axios.post<AvgTicketVisitUserResponse>(url, params, {
     headers: token ? { Authorization: `Bearer ${token}` } : undefined
   });
-  // eslint-disable-next-line no-console
-  console.log('fetchAvgTicketVisitUser raw response:', response);
   return response.data;
+}
+
+// Tenant Average Utilization API
+export async function fetchTenantAverageUtilization(
+  params: TenantAverageUtilizationRequest,
+  token?: string
+): Promise<TenantAverageUtilizationResponse> {
+  const url = `${API_BASE}/api/get/tenant-average-utilization/`;
+  const response = await axios.post<TenantAverageUtilizationResponse>(
+    url,
+    params,
+    {
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined
+    }
+  );
+  return response.data;
+}
+
+// API Utilization MTD
+export async function fetchApiUtilizationMtd(
+  token?: string
+): Promise<ApiUtilizationMtdResponse> {
+  const url = `${API_BASE}/api/get/api-utilization/mtd/?tenant_type=paid`;
+  const { data } = await axios.get<ApiUtilizationMtdResponse>(url, {
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined
+  });
+  return data;
 }

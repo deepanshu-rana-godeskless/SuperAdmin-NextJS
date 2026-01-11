@@ -326,6 +326,48 @@ export interface AvgTicketVisitUserResponse {
   results: AvgTicketVisitUserResult[];
 }
 
+// Tenant Average Utilization Data
+export interface TenantAverageUtilizationRequest {
+  count: number;
+  start_date: string;
+  end_date: string;
+  tenant_type: string;
+}
+
+export interface TenantAverageUtilizationUsage {
+  video_count: number;
+  whatsapp_count: number;
+  sms_count: number;
+  used_space: number;
+  tenant_company: string;
+  tenant_instance_name: string;
+  total_count: number;
+  total_users: number;
+  average_tenant: number;
+}
+
+export interface TenantAverageUtilizationResponse {
+  usage: TenantAverageUtilizationUsage[];
+}
+
+// API Utilization MTD
+export interface ApiUtilizationMtdItem {
+  id: number;
+  tenant: string;
+  tenant_type: string;
+  from: string;
+  to: string;
+  total_api_hits: number;
+  maximum_total_api_hits: number;
+  total_success_hits: number;
+  total_failed_hits: number;
+}
+
+export interface ApiUtilizationMtdResponse {
+  status: boolean;
+  data: ApiUtilizationMtdItem[];
+}
+
 // Generic API error
 export interface ApiError {
   message: string;
