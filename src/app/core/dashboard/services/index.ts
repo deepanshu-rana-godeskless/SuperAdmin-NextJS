@@ -28,6 +28,10 @@ import type {
   TenantAverageUtilizationRequest,
   TenantAverageUtilizationResponse,
   ApiUtilizationMtdResponse,
+  TransactionTrendRequest,
+  TransactionTrendResponse,
+  LeastTicketVisitTenantDataRequest,
+  LeastTicketVisitTenantDataResponse,
   ApiError
 } from '../types/api-types';
 
@@ -209,4 +213,46 @@ export async function fetchApiUtilizationMtd(
     headers: token ? { Authorization: `Bearer ${token}` } : undefined
   });
   return data;
+}
+
+export async function fetchTransactionTrend(
+  params: Omit<TransactionTrendRequest, 'filter_value'>,
+  token?: string
+): Promise<TransactionTrendResponse> {
+  // Determine filter_value
+  const start = new Date(params.start_date);
+  const end = new Date(params.end_date);
+  let filter_value: 'week' | 'month' | 'year' = 'week';
+  if (start.getFullYear() !== end.getFullYear()) {
+    filter_value = 'year';
+  } else if (start.getMonth() !== end.getMonth()) {
+    filter_value = 'month';
+  } else {
+    filter_value = 'week';
+  }
+  const payload: TransactionTrendRequest = {
+    ...params,
+    filter_value
+  };
+  const url = `${API_BASE}/api/trend/transaction-trend/paid/`;
+  const response = await axios.post<TransactionTrendResponse>(url, payload, {
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined
+  });
+  return response.data;
+}
+
+// Least Ticket Visit Tenant Data API
+export async function fetchLeastTicketVisitTenantData(
+  params: LeastTicketVisitTenantDataRequest,
+  token?: string
+): Promise<LeastTicketVisitTenantDataResponse> {
+  const url = `${API_BASE}/api/get/least-ticket-visit-tenant-data/`;
+  const response = await axios.post<LeastTicketVisitTenantDataResponse>(
+    url,
+    params,
+    {
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined
+    }
+  );
+  return response.data;
 }

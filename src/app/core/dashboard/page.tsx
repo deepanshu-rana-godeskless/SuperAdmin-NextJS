@@ -16,7 +16,9 @@ import {
   fetchLeastRecentUserTenantData,
   fetchAvgTicketVisitUser,
   fetchTenantAverageUtilization,
-  fetchApiUtilizationMtd
+  fetchApiUtilizationMtd,
+  fetchTransactionTrend,
+  fetchLeastTicketVisitTenantData
 } from './services';
 import type {
   TrafficResponse,
@@ -29,7 +31,9 @@ import type {
   LeastRecentUserTenantDataResponse,
   AvgTicketVisitUserResponse,
   TenantAverageUtilizationResponse,
-  ApiUtilizationMtdResponse
+  ApiUtilizationMtdResponse,
+  TransactionTrendResponse,
+  LeastTicketVisitTenantDataResponse
 } from './types/api-types';
 import { formatDateForApi } from './lib/dashboard-utils';
 
@@ -68,6 +72,10 @@ export default function DashboardPage() {
     useState<TenantAverageUtilizationResponse | null>(null);
   const [apiUtilizationMtd, setApiUtilizationMtd] =
     useState<ApiUtilizationMtdResponse | null>(null);
+  const [transactionTrend, setTransactionTrend] =
+    useState<TransactionTrendResponse | null>(null);
+  const [leastTicketVisitTenantData, setLeastTicketVisitTenantData] =
+    useState<LeastTicketVisitTenantDataResponse | null>(null);
   const [loading, setLoading] = useState(true);
 
   // Fetch all dashboard data with given date range
@@ -97,7 +105,9 @@ export default function DashboardPage() {
           leastRecentUserTenantDataRes,
           avgTicketVisitUserRes,
           tenantAverageUtilizationRes,
-          apiUtilizationMtdRes
+          apiUtilizationMtdRes,
+          transactionTrendRes,
+          leastTicketVisitTenantDataRes
         ] = await Promise.all([
           fetchTraffic(token).catch((e) => {
             toast.error('Failed to fetch traffic data');
@@ -223,6 +233,29 @@ export default function DashboardPage() {
           fetchApiUtilizationMtd(token).catch((e) => {
             toast.error('Failed to fetch API Utilization MTD data');
             return null;
+          }),
+          fetchTransactionTrend(
+            {
+              start_date,
+              end_date,
+              tenant_type: 'paid'
+            },
+            token
+          ).catch((e) => {
+            toast.error('Failed to fetch tickets & visits data');
+            return null;
+          }),
+          fetchLeastTicketVisitTenantData(
+            {
+              count: 5,
+              fromDate: start_date,
+              toDate: end_date,
+              tenant_type: 'paid'
+            },
+            token
+          ).catch((e) => {
+            toast.error('Failed to fetch bottom tickets/visits data');
+            return null;
           })
         ]);
         setTraffic(trafficRes);
@@ -239,6 +272,8 @@ export default function DashboardPage() {
         setAvgTicketVisitUser(avgTicketVisitUserRes);
         setTenantAverageUtilization(tenantAverageUtilizationRes);
         setApiUtilizationMtd(apiUtilizationMtdRes);
+        setTransactionTrend(transactionTrendRes);
+        setLeastTicketVisitTenantData(leastTicketVisitTenantDataRes);
       } catch (e) {
         toast.error('Dashboard data failed to load.');
       } finally {
@@ -301,6 +336,8 @@ export default function DashboardPage() {
         avgTicketVisitUser={avgTicketVisitUser}
         tenantAverageUtilization={tenantAverageUtilization}
         apiUtilizationMtd={apiUtilizationMtd}
+        transactionTrend={transactionTrend}
+        leastTicketVisitTenantData={leastTicketVisitTenantData}
         loading={loading}
       />
     </PageContainer>

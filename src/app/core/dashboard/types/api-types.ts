@@ -368,6 +368,44 @@ export interface ApiUtilizationMtdResponse {
   data: ApiUtilizationMtdItem[];
 }
 
+// Tickets and Visits API
+export interface TransactionTrendRequest {
+  start_date: string;
+  end_date: string;
+  tenant_type: string;
+  filter_value: 'week' | 'month' | 'year';
+}
+
+export interface TransactionTrendItem {
+  value: string;
+  visit_count: number;
+  ticket_count: number;
+}
+
+export interface TransactionTrendResponse {
+  status: boolean;
+  data: TransactionTrendItem[];
+}
+
+// Least Ticket Visit Tenant Data API
+export interface LeastTicketVisitTenantDataRequest {
+  count: number;
+  fromDate: string;
+  toDate: string;
+  tenant_type: string;
+}
+
+export interface LeastTicketVisitTenantDataItem {
+  tenant_name: string;
+  total_tickets: number;
+  total_visits: number;
+  total_tickets_visits: number;
+}
+
+export interface LeastTicketVisitTenantDataResponse {
+  results: LeastTicketVisitTenantDataItem[];
+}
+
 // Generic API error
 export interface ApiError {
   message: string;

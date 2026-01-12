@@ -1,9 +1,9 @@
 // DEV
-export const environment = {
-  production: false,
-  apiUrl: 'https://stbbackend-dev.godeskless.com',
-  leadCreationApiUrl: 'https://multitenancydev.godeskless.com'
-};
+// export const environment = {
+//   production: false,
+//   apiUrl: 'https://stbbackend-dev.godeskless.com',
+//   leadCreationApiUrl: 'https://multitenancydev.godeskless.com'
+// };
 
 // QA
 // export const environment = {
@@ -20,11 +20,11 @@ export const environment = {
 // };
 
 // Prod
-// export const environment = {
-//   production: false,
-//   apiUrl: 'https://stbbackend.godeskless.com',
-//   leadCreationApiUrl: 'https://trackhelpprod.godeskless.com'
-// };
+export const environment = {
+  production: false,
+  apiUrl: 'https://stbbackend.godeskless.com',
+  leadCreationApiUrl: 'https://trackhelpprod.godeskless.com'
+};
 
 /*
  * For easier debugging in development mode, you can import the following file
